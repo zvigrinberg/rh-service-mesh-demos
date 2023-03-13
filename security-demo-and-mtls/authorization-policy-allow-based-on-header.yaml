@@ -1,0 +1,17 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-based-on-header
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo-app
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces: ["demo"]
+    when:
+      - key:  request.headers[user]
+        values: ["admin-*"]

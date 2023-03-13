@@ -1,0 +1,20 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt-raw-cloud-native-claim
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo-app
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            requestPrincipals: ["zgrinber@redhat.com/zgrinber@redhat.com"]
+      to:
+      - operation:
+          methods: ["GET"]
+      when:
+      - key: request.auth.claims[cloud-native]
+        value: ["true"]

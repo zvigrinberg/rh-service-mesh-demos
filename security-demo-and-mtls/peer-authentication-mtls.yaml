@@ -1,0 +1,8 @@
+kind: PeerAuthentication
+apiVersion: security.istio.io/v1beta1
+metadata:
+  name: strict-policy
+  namespace: demo
+spec:
+  mtls:
+    mode: STRICT

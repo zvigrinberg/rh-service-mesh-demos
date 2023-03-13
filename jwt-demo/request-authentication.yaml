@@ -1,0 +1,13 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: "jwt-auth"
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo-app
+  jwtRules:
+    - issuer: "zgrinber@redhat.com"
+      jwksUri: "https://raw.githubusercontent.com/zvigrinberg/Cloud-native-patterns/main/isolated-secrets-store-k8s/jwt/jkws-demo.json"
+

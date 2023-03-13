@@ -1,0 +1,18 @@
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: demo-app-split
+  namespace: demo
+spec:
+  hosts:
+    - demo-app.demo.svc.cluster.local
+  http:
+    - route:
+        - destination:
+            host: demo-app.demo.svc.cluster.local
+            subset: v1
+          weight: 50
+        - destination:
+            host: demo-app.demo.svc.cluster.local
+            subset: v2
+          weight: 50
