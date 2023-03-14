@@ -1,9 +1,7 @@
 package com.redhat;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,10 +23,10 @@ private static final ObjectMapper om = new ObjectMapper();
     @SneakyThrows
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public GreetingStructure hello() {
+    public GreetingStructure hello(@DefaultValue ("John Doe") @QueryParam("recipient") String recipient) {
 //        String app_version = System.getenv("APP_VERSION");
 
-        GreetingStructure greetingMessage = greetingService.generateGreeting(app_version);
+        GreetingStructure greetingMessage = greetingService.generateGreeting(app_version,recipient);
         String jsonResponse = om.writerWithDefaultPrettyPrinter().writeValueAsString(greetingMessage);
         LOG.infof("Received request, App Version=" + app_version + ", About to return next response Body : \n %s", jsonResponse);
         return greetingMessage;

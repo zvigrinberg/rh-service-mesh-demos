@@ -9,5 +9,5 @@ public class GreetingBody extends GreetingStructure{
     private String Greeting;
     private String Type;
     private String from;
-//    private String to;
+    private String to;
 }

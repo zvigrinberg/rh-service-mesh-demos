@@ -2,5 +2,5 @@ package com.redhat;
 
 public interface GreetingService {
 
-   GreetingStructure generateGreeting(String appVersion);
+   GreetingStructure generateGreeting(String appVersion, String recipient);
 }
