@@ -3,6 +3,9 @@ kind: AuthorizationPolicy
 metadata:
   name: require-jwt
   namespace: demo
+  labels:
+    demoMeshResource: "true"
+    policyResource: "true"
 spec:
   selector:
     matchLabels:

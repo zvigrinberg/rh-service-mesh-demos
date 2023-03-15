@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-app
+    demoMeshResource: "true"
+    policyResource: "true"
+    version: v2
+  name: demo-app-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app
+      version: v2
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
+      labels:
+        app: demo-app
+        version: v2
+
+    spec:
+      containers:
+      - image: quay.io/zgrinber/demo-app:2
+        name: demo-app-v2
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: demo-app
+    demoMeshResource: "true"
+    version: v2
+  name: demo-app-v2
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: demo-app
+    version: v2
+

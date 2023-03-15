@@ -3,6 +3,9 @@ apiVersion: security.istio.io/v1beta1
 metadata:
   name: allow-same-namespace-custom
   namespace: demo
+  labels:
+    demoMeshResource: "true"
+    policyResource: "true"
 spec:
   selector:
     matchLabels:

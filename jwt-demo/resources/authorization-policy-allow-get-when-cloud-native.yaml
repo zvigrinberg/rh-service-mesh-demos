@@ -1,6 +1,9 @@
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
+  labels:
+    demoMeshResource: "true"
+    policyResource: "true"
   name: require-jwt-raw-cloud-native-claim
   namespace: demo
 spec:
@@ -17,4 +20,4 @@ spec:
           methods: ["GET"]
       when:
       - key: request.auth.claims[cloud-native]
-        value: ["true"]
+        values: ["true"]

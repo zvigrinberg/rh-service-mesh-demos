@@ -3,6 +3,9 @@ kind: AuthorizationPolicy
 metadata:
   name: allow-custom-workload-sa
   namespace: demo
+  labels:
+    demoMeshResource: "true"
+    policyResource: "true"
 spec:
   selector:
     matchLabels:

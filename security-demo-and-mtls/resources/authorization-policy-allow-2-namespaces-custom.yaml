@@ -1,0 +1,19 @@
+kind: AuthorizationPolicy
+apiVersion: security.istio.io/v1beta1
+metadata:
+  name: allow-two-namespaces-custom
+  namespace: demo
+  labels:
+    demoMeshResource: "true"
+    policyResource: "true"
+spec:
+  selector:
+    matchLabels:
+      app: demo-app
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            namespaces:
+              - demo
+              - demo-test

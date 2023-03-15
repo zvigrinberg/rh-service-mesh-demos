@@ -3,6 +3,9 @@ kind: AuthorizationPolicy
 metadata:
   name: allow-based-on-header
   namespace: demo
+  labels:
+    demoMeshResource: "true"
+    policyResource: "true"
 spec:
   selector:
     matchLabels:

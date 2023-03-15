@@ -3,6 +3,9 @@ kind: RequestAuthentication
 metadata:
   name: "jwt-auth"
   namespace: demo
+  labels:
+    demoMeshResource: "true"
+    policyResource: "true"
 spec:
   selector:
     matchLabels:
