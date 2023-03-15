@@ -4,7 +4,6 @@ metadata:
   labels:
     app: demo-app
     demoMeshResource: "true"
-    policyResource: "true"
     version: v1
   name: demo-app
 spec:
