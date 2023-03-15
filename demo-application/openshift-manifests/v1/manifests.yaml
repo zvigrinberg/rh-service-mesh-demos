@@ -6,7 +6,7 @@ metadata:
     demoMeshResource: "true"
     policyResource: "true"
     version: v1
-  name: demo-app-v1
+  name: demo-app
 spec:
   replicas: 1
   selector:
@@ -22,10 +22,9 @@ spec:
         app: demo-app
         version: v1
     spec:
-      serviceAccountName:
       containers:
       - image: quay.io/zgrinber/demo-app:1
-        name: demo-app-v1
+        name: demo-app
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -36,9 +35,8 @@ kind: Service
 metadata:
   labels:
     app: demo-app
-    version: v1
     demoMeshResource: "true"
-  name: demo-app-v1
+  name: demo-app
 spec:
   ports:
   - name: http
@@ -51,5 +49,4 @@ spec:
     targetPort: 8080
   selector:
     app: demo-app
-    version: v1
 
