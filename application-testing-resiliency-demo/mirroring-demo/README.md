@@ -17,7 +17,7 @@ This powerful feature doesn't affect clients on production environment( they sti
 ```shell
 oc apply -f destination-rule-subseting.yaml
 ```
-3. Create the `VirtualServicec` That will route all traffic to version v1, but will mirror all of it in parallel to v2 as well.
+3. Create the `VirtualService` That will route all traffic to version v1, but will mirror all of it in parallel to v2 as well.
 ```shell
 oc apply -f virtual-service-traffic-mirroring.yaml
 ```

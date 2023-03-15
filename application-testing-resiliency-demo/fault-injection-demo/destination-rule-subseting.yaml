@@ -2,11 +2,11 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: demo-app
-  namespace: demo
   labels:
+    demoMeshResource: "true"
     policyResource: "true"
 spec:
-  host: demo-app.demo.svc.cluster.local
+  host: demo-app
   subsets:
     - name: v1
       labels:

@@ -3,6 +3,8 @@ apiVersion: networking.istio.io/v1alpha3
 metadata:
   name: demo-app-split
   namespace: demo
+  labels:
+    policyResource: "true"
 spec:
   hosts:
     - demo-app.demo.svc.cluster.local
