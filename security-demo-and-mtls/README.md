@@ -28,7 +28,7 @@ oc apply -f resources/peer-authentication-mtls.yaml
 
 2. Let's upgrade deployment of demo-app to listening on port 8083 instead of 8080, So it will be easier to sniff/capture traffic payloads: 
 ```shell
-oc patch deployment demo-app-v1 --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"quay.io/zgrinber/demo-app:3"},{"op": "add", "path": "/spec/template/spec/containers/0/ports/1", "value": {"containerPort": 8083, "protocol": "TCP"}}]'
+oc patch deployment demo-app --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"quay.io/zgrinber/demo-app:3"},{"op": "add", "path": "/spec/template/spec/containers/0/ports/1", "value": {"containerPort": 8083, "protocol": "TCP"}}]'
 ```
 
 3. Deploy a client pod with envoy proxy sidecar
@@ -48,7 +48,7 @@ tcpdump -i any port 8083 -XX
 
 6. Go Back to the other terminal, and run the following command to invoke service from client pod (with side-car)
 ```shell
-oc exec rest-api-client -n demo sh -- curl  -i http://demo-app-v1:8083/hello -H 'Password: SuperSecretPassword'
+oc exec rest-api-client -n demo sh -- curl  -i http://demo-app:8083/hello -H 'Password: SuperSecretPassword'
 ```
 
 7. On the shell of the debugged node, you should see payload intercepted in plain-text ( because we disabled auto mTLS)
@@ -73,7 +73,7 @@ Output:
         0x00f0:  6232 6461 2d35 3435 3865 6163 3565 3638  b2da-5458eac5e68
         0x0100:  340d 0a78 2d65 6e76 6f79 2d64 6563 6f72  4..x-envoy-decor
         0x0110:  6174 6f72 2d6f 7065 7261 7469 6f6e 3a20  ator-operation:.
-        0x0120:  6465 6d6f 2d61 7070 2d76 312e 6465 6d6f  demo-app-v1.demo
+        0x0120:  6465 6d6f 2d61 7070 2d76 312e 6465 6d6f  demo-app.demo
         0x0130:  2e73 7663 2e63 6c75 7374 6572 2e6c 6f63  .svc.cluster.loc
         0x0140:  616c 3a38 3038 332f 2a0d 0a78 2d65 6e76  al:8083/*..x-env
         0x0150:  6f79 2d70 6565 722d 6d65 7461 6461 7461  oy-peer-metadata
@@ -241,7 +241,7 @@ Output:
         0x0510:  6a45 3d0d 0a78 2d65 6e76 6f79 2d70 6565  jE=..x-envoy-pee
         0x0520:  722d 6d65 7461 6461 7461 2d69 643a 2073  r-metadata-id:.s
         0x0530:  6964 6563 6172 7e31 302e 3132 382e 302e  idecar~10.128.0.
-        0x0540:  3132 317e 6465 6d6f 2d61 7070 2d76 312d  121~demo-app-v1-
+        0x0540:  3132 317e 6465 6d6f 2d61 7070 2d76 312d  121~demo-app-
         0x0550:  3566 3963 3434 6662 6238 2d36 7834 6d7a  5f9c44fbb8-6x4mz
         0x0560:  2e64 656d 6f7e 6465 6d6f 2e73 7663 2e63  .demo~demo.svc.c
         0x0570:  6c75 7374 6572 2e6c 6f63 616c 0d0a 6461  luster.local..da
@@ -266,7 +266,7 @@ oc patch peerauthentications.security.istio.io strict-policy --type='merge' -p '
 
 9. Invoke Again request to demo-app service from rest-client pod
 ```shell
-oc exec rest-api-client -n demo sh -- curl  -i http://demo-app-v1:8083/hello -H 'Password: SuperSecretPassword'
+oc exec rest-api-client -n demo sh -- curl  -i http://demo-app:8083/hello -H 'Password: SuperSecretPassword'
 ```
 10. In the debugged node window, you should see now that all payloads now encrypted.
 Output example:
@@ -530,7 +530,7 @@ exit
 ```
 13. Try to invoke service demo-app from that client:
 ```shell
-oc exec rest-api-client-no-proxy -n demo sh -- curl  -i http://demo-app-v1:8083/hello -H 'Password: SuperSecretPassword'
+oc exec rest-api-client-no-proxy -n demo sh -- curl  -i http://demo-app:8083/hello -H 'Password: SuperSecretPassword'
 ```
 Output:
 ```shell
@@ -547,7 +547,7 @@ oc patch peerauthentications.security.istio.io strict-policy --type='merge' -p '
 ```
 15. Wait few seconds and invoke again the Service using HTTP Call:
 ```shell
-oc exec rest-api-client-no-proxy -n demo sh -- curl  -i http://demo-app-v1:8083/hello -H 'Password: SuperSecretPassword'
+oc exec rest-api-client-no-proxy -n demo sh -- curl  -i http://demo-app:8083/hello -H 'Password: SuperSecretPassword'
 ```
 Output:
 ```shell
@@ -560,7 +560,7 @@ content-length: 125
 x-envoy-upstream-service-time: 4
 date: Wed, 15 Mar 2023 07:36:52 GMT
 server: istio-envoy
-x-envoy-decorator-operation: demo-app-v1.demo.svc.cluster.local:8083/*
+x-envoy-decorator-operation: demo-app.demo.svc.cluster.local:8083/*
 
 {"from":"The Greeting Application Version= v1","to":"John Doe","type":"General","greeting":"Wish you prosperity and Wealth!"}
 ```
@@ -576,7 +576,7 @@ oc apply -f resources/authorization-policy-allow-same-namespace-custom.yaml
 
 2. Try to access the demo-app service using a pod that is in the mesh:
 ```shell
-oc exec rest-api-client -n demo  -- curl -i http://demo-app-v1:8080/hello -H 'Password: SuperSecretPassword'
+oc exec rest-api-client -n demo  -- curl -i http://demo-app:8080/hello -H 'Password: SuperSecretPassword'
 ```
 Output:
 ```shell
@@ -595,7 +595,7 @@ server: envoy
 
 3. Try now to access the Service from pod that is outside the mesh ( Without envoy proxy side-car)
 ```shell
-oc exec rest-api-client-no-proxy -n demo -- curl  -i http://demo-app-v1:8080/hello
+oc exec rest-api-client-no-proxy -n demo -- curl  -i http://demo-app:8080/hello
 ```
 Output:
 ```shell
@@ -604,7 +604,7 @@ content-length: 19
 content-type: text/plain
 date: Wed, 15 Mar 2023 07:50:53 GMT
 server: istio-envoy
-x-envoy-decorator-operation: demo-app-v1.demo.svc.cluster.local:8080/*
+x-envoy-decorator-operation: demo-app.demo.svc.cluster.local:8080/*
 
 RBAC: access denied
 ```
@@ -614,7 +614,7 @@ oc apply -f resources/rest-client-pod-sidecar.yaml -n demo-test
 ```
 5. Try to access from rest client pod that is in a different namespace demo-test, and you should be unauthorized because the policy above only allow traffic to demo-app workload from the same namespace
 ```shell
-oc exec rest-api-client -n demo-test  -- curl -i http://demo-app-v1.demo:8080/hello
+oc exec rest-api-client -n demo-test  -- curl -i http://demo-app.demo:8080/hello
 ```
 Output:
 ```shell
@@ -642,7 +642,7 @@ oc apply -f resources/authorization-policy-allow-2-namespaces-custom.yaml
 
 3. Wait 10-15 seconds, Now try again to invoke the service from demo-test namespace
 ```shell
- oc exec rest-api-client -n demo-test  -- curl -i http://demo-app-v1.demo:8080/hello
+ oc exec rest-api-client -n demo-test  -- curl -i http://demo-app.demo:8080/hello
 ```
 Output:
 ```shell
@@ -667,8 +667,8 @@ oc apply -f resources/authorization-policy-allow-based-on-header.yaml
 ```
 3. Try to invoke twice the service from same namespace, one time without user header, and one time with the user header with unmatched value:
 ```shell
- oc exec rest-api-client -n demo  -- curl -i http://demo-app-v1:8080/hello -H 'user: zvi'
- oc exec rest-api-client -n demo  -- curl -i http://demo-app-v1:8080/hello
+ oc exec rest-api-client -n demo  -- curl -i http://demo-app:8080/hello -H 'user: zvi'
+ oc exec rest-api-client -n demo  -- curl -i http://demo-app:8080/hello
 ```
 In Both cases Output will be:
 ```shell
@@ -684,7 +684,7 @@ RBAC: access denied
 
 4. Invoke HTTP Call using the user header with value 'admin-zvi':
 ```shell
- oc exec rest-api-client -n demo  -- curl -i http://demo-app-v1:8080/hello -H 'user: admin-zvi'
+ oc exec rest-api-client -n demo  -- curl -i http://demo-app:8080/hello -H 'user: admin-zvi'
 ```
 Output:
 ```shell
@@ -710,7 +710,7 @@ oc apply -f resources/authorization-policy-allow-custom-workload-sa.yaml
 
 3. Now try to invoke the service from the rest-client-pod that is running inside the mesh with "default" `ServiceAccount`:
 ```shell
-oc exec rest-api-client -n demo  -- curl -i http://demo-app-v1:8080/hello
+oc exec rest-api-client -n demo  -- curl -i http://demo-app:8080/hello
 ```
 Output:
 ```shell
@@ -739,7 +739,7 @@ oc apply -f resources/rest-client-pod-sidecar-custom-sa.yaml
 ```
 7. Try now 
 ```shell
-oc exec rest-api-client -n demo  -- curl -i http://demo-app-v1:8080/hello
+oc exec rest-api-client -n demo  -- curl -i http://demo-app:8080/hello
 ```
 Output:
 ```shell
