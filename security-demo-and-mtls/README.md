@@ -508,6 +508,7 @@ Output example:
         0x0660:  b8f5                                     
 ```
 Note: Basically the http payload "upgraded" to TLS encrypted, by mTLS enabled between 2 workloads in namespace( envoy proxy to envoy proxy)  so the communication channel between the two pods is encrypted
+
 11. press CTRL +C to stop sniffing , and Exit debugged node' pod:
 ```shell
 exit
