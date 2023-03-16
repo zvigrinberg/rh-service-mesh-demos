@@ -1,4 +1,4 @@
-#Security + mTLS RH Service Mesh Demo
+# Security + mTLS RH Service Mesh Demo
 
 The Goal is to demonstrate Several options to grant access to a given workload, and to Encrypt Pod to Pod Channel using mutual TLS.  
 
