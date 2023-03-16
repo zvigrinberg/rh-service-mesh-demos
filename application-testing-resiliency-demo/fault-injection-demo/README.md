@@ -279,7 +279,7 @@ server: envoy
 
 ```
 
-5. Open Kiali UI 
+5. Open Kiali UI and authenticate using Openshift Credentials:
 ```shell
-xdg-open https://kiali-istio-system.apps.cluster-6jz5w.6jz5w.sandbox1854.opentlc.com/console/overview?duration=60&refresh=60000
+ xdg-open https://$(oc get route kiali -n istio-system -o=jsonpath="{.spec.host}")
 ```
