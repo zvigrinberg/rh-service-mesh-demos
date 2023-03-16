@@ -133,17 +133,22 @@ attempt 10: {
 }
 
 ```
-7. Delete the "mono" `VirtualService`:
+7. Open Kiali UI and authenticate using Openshift Credentials:
+```shell
+ xdg-open https://$(oc get route kiali -n istio-system -o=jsonpath="{.spec.host}")
+``` 
+8. Click on the Graph menu on the left side, and choose the demo namespace, Look the graph of traffic propagation.
+9. Delete the "mono" `VirtualService`:
 ```shell
 oc delete -f virtual-service-mono-traffic.yaml
 ```
 
-8. Now create `VirtualService` that splits the traffic 50%-50%:
+10. Now create `VirtualService` that splits the traffic 50%-50%:
 ```shell
 oc apply -f virtual-service-shifting-traffic.yaml
 ```
 
-9. Wait 5-10 seconds, and run loop of 10 invocations of the demo-app microservice:
+11. Wait 5-10 seconds, and run loop of 10 invocations of the demo-app microservice:
 ```shell
 for i in {1..10}; do echo -n "attempt $i: "  ;  oc exec rest-api-client -n demo  -- curl -s  http://demo-app:8080/hello | jq .; echo ; done
 ```
@@ -216,3 +221,4 @@ attempt 10: {
 }
 
 ```
+12. Refresh the screen at kiali graph visualization , and you should see that the traffic that sent only to versio v1, now splitted between v1 and v2.
