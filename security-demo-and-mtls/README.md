@@ -38,7 +38,7 @@ oc apply -f resources/rest-client-pod-sidecar.yaml -n demo
 
 4. On a new Terminal window,Enter openshift worker node of demo application pod in debug mode: 
 ```shell
-oc debug node/$(oc get pods -l app=demo-app:q -o wide | awk '{print $7}' | grep -v NODE)
+oc debug node/$(oc get pods -l app=demo-app -o wide | awk '{print $7}' | grep -v NODE)
 ```
 
 5. Inside the node pod, sniff/intercept traffic on all network interfaces for port 8083:
