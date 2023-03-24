@@ -36,9 +36,9 @@ oc patch deployment demo-app --type='json' -p='[{"op": "replace", "path": "/spec
 oc apply -f resources/rest-client-pod-sidecar.yaml -n demo
 ```
 
-4. On a new Terminal window,Enter openshift worker node in debug mode, 
+4. On a new Terminal window,Enter openshift worker node of demo application pod in debug mode: 
 ```shell
-oc debug node/$(oc get node -l node-role.kubernetes.io/worker="" | grep -v NAME | awk '{print $1}')
+oc debug node/$(oc get pods -l app=demo-app:q -o wide | awk '{print $7}' | grep -v NODE)
 ```
 
 5. Inside the node pod, sniff/intercept traffic on all network interfaces for port 8083:
